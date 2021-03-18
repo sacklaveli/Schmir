@@ -1,4 +1,5 @@
 ﻿using DeckService.models;
+using Schmear.BettingLogic.SimpleRules;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace Schmear.BettingLogic
     {
         public int? Calc(int returnBet, IEnumerable<IGrouping<string, Card>> hand)
         {
-            if (hand.Where(x => x.Where(x =>x.Rank >= 12).Count() > 3 && x.Any(x => x.Rank == 2)).Count() >= 1)
+            if (hand.Where(suits => suits.Where(card => StandardRules.IsSwing(card.Rank)).Count() >= 3 && suits.Any(x => x.Rank == StandardValues.LowCard)).Count() >= 1)
             {
                return 4;
             }
