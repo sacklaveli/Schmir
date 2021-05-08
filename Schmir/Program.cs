@@ -40,6 +40,7 @@ namespace Schmear
                 var betRequest = new BetRequest()
                 {
                     BetLogicRules = GetBetLogicRules.Rules,
+                    BetModifiers = GetBetModifiers.Rules,
                     Hand = new Hand() { Cards = playerhand },
                     PlayerCount = players,
                     Position = i,

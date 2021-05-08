@@ -12,6 +12,9 @@ namespace Schmear.BettingLogic
         {
             new IfFourSwingsThan4(),
             new IfThereSwingsAnd2Than4(),
+            new IfLionShareOfAces(),
+            new IfHelperBet(),
+            new IfAceAtLeast3(),
         };
     }
 
