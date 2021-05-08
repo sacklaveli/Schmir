@@ -1,5 +1,6 @@
 ﻿using DeckService.models;
 using Schmear.BettingLogic;
+using Schmear.BettingLogic.ComplexModifiers;
 using Schmear.models;
 using System;
 using System.Collections.Generic;
@@ -10,44 +11,60 @@ namespace Schmear
 {
     public class Bet
     {
-        public async Task<int> GetBetAsync(BetRequest betRequest)
+        public int GetBet(BetRequest betRequest)
         {
             var returnBet = 0;
-            var handSorted = betRequest.Hand.Cards.GroupBy(x => x.Suit.FirstOrDefault());
 
-            var bets = await RunBetLogicRules(betRequest, returnBet, handSorted);
-            returnBet = ReduceBetsToSingleBet(bets);
-            //Limit
-            if (betRequest.Position + 1 == betRequest.PlayerCount && returnBet > betRequest.CurrentBet)
-            {
-                returnBet = betRequest.CurrentBet + 1;
-            }
+            returnBet = RunAllBetRulesReturnHighestBet(betRequest, returnBet, GetSortHandBySuit(betRequest));
+
+            returnBet = RunAllBetModifiersReturnModifiedBet(betRequest, returnBet);
 
             return returnBet;
         }
 
-        private static int ReduceBetsToSingleBet(List<int?> bets)
+        private int RunAllBetRulesReturnHighestBet(BetRequest betRequest, int returnBet, IEnumerable<IGrouping<string, Card>> hand)
+        {
+           var bets = new List<int?>();
+            
+            betRequest.BetLogicRules.ForEach(async rule =>
+            {
+                bets.Add(await GetBetFromRule(rule, returnBet, hand));
+            });
+
+            return GetMaxBet(bets);
+        }
+
+        private int RunAllBetModifiersReturnModifiedBet(BetRequest betRequest, int returnBet)
+        {
+            var bets = new List<int?>();
+
+            betRequest.BetModifiers.ForEach(async rule =>
+            {
+                bets.Add(await GetBetFromRule(rule, returnBet, betRequest));
+            });
+
+            return GetMaxBet(new List<int?>() { GetMaxBet(bets), returnBet });
+        }
+
+        private static IEnumerable<IGrouping<string, Card>> GetSortHandBySuit(BetRequest betRequest)
+        {
+            return betRequest.Hand.Cards.GroupBy(x => x.Suit.FirstOrDefault());
+        }
+
+        private static int GetMaxBet(List<int?> bets)
         {
             return Convert.ToInt32(bets.Where(x => x is not null).Max());
         }
 
-        private async Task<List<int?>> RunBetLogicRules(BetRequest betRequest, int returnBet, IEnumerable<IGrouping<string, Card>> hand)
-        {
-           var bets = new List<int?>();
-           var bettingTasks = betRequest.BetLogicRules.Select(async rule =>
-            {
-                bets.Add(GetBetInt(rule, returnBet, hand));
-            });
-
-            await Task.WhenAll(bettingTasks);
-            return bets;
-        }
-
-
-
-        private int? GetBetInt(IBetLogicRule rule, int returnBet, IEnumerable<IGrouping<string, Card>> suitsWithSwings)
+        private async Task<int?> GetBetFromRule(IBetLogicRule rule, int returnBet, IEnumerable<IGrouping<string, Card>> suitsWithSwings)
         {
             return rule.Calc(returnBet, suitsWithSwings);
         }
+
+        private async Task<int?> GetBetFromRule(IBetModifiers rule, int returnBet, BetRequest betRequest)
+        {
+            return rule.Modify(betRequest, returnBet);
+        }
+
     }
 }
