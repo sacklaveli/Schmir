@@ -11,39 +11,39 @@ namespace Schmear
 {
     public class Bet
     {
-        public async Task<int> GetBetAsync(BetRequest betRequest)
+        public int GetBet(BetRequest betRequest)
         {
             var returnBet = 0;
 
-            returnBet = RunBetLogicRules(betRequest, returnBet, GetSortHandBySuit(betRequest));
+            returnBet = RunAllBetRulesReturnHighestBet(betRequest, returnBet, GetSortHandBySuit(betRequest));
 
-            returnBet = RunBetModifiers(betRequest, returnBet);
+            returnBet = RunAllBetModifiersReturnModifiedBet(betRequest, returnBet);
 
             return returnBet;
         }
 
-        private int RunBetLogicRules(BetRequest betRequest, int returnBet, IEnumerable<IGrouping<string, Card>> hand)
+        private int RunAllBetRulesReturnHighestBet(BetRequest betRequest, int returnBet, IEnumerable<IGrouping<string, Card>> hand)
         {
            var bets = new List<int?>();
             
             betRequest.BetLogicRules.ForEach(async rule =>
             {
-                bets.Add(await GetBetInt(rule, returnBet, hand));
+                bets.Add(await GetBetFromRule(rule, returnBet, hand));
             });
 
             return GetMaxBet(bets);
         }
 
-        private int RunBetModifiers(BetRequest betRequest, int returnBet)
+        private int RunAllBetModifiersReturnModifiedBet(BetRequest betRequest, int returnBet)
         {
             var bets = new List<int?>();
 
             betRequest.BetModifiers.ForEach(async rule =>
             {
-                bets.Add(await GetBetInt(rule, returnBet, betRequest));
+                bets.Add(await GetBetFromRule(rule, returnBet, betRequest));
             });
 
-            return GetMaxBet(bets);
+            return GetMaxBet(new List<int?>() { GetMaxBet(bets), returnBet });
         }
 
         private static IEnumerable<IGrouping<string, Card>> GetSortHandBySuit(BetRequest betRequest)
@@ -56,14 +56,15 @@ namespace Schmear
             return Convert.ToInt32(bets.Where(x => x is not null).Max());
         }
 
-        private async Task<int?> GetBetInt(IBetLogicRule rule, int returnBet, IEnumerable<IGrouping<string, Card>> suitsWithSwings)
+        private async Task<int?> GetBetFromRule(IBetLogicRule rule, int returnBet, IEnumerable<IGrouping<string, Card>> suitsWithSwings)
         {
             return rule.Calc(returnBet, suitsWithSwings);
         }
 
-        private async Task<int?> GetBetInt(IBetModifiers rule, int returnBet, BetRequest betRequest)
+        private async Task<int?> GetBetFromRule(IBetModifiers rule, int returnBet, BetRequest betRequest)
         {
             return rule.Modify(betRequest, returnBet);
         }
+
     }
 }

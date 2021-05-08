@@ -41,7 +41,7 @@ namespace Schmear.test
             };
 
            var bet = new Bet();
-           var result = await bet.GetBetAsync(betRequest);
+           var result = bet.GetBet(betRequest);
 
             result.Should().Be(4);
         }
@@ -74,7 +74,7 @@ namespace Schmear.test
             };
 
             var bet = new Bet();
-            var result = await bet.GetBetAsync(betRequest);
+            var result = bet.GetBet(betRequest);
 
             result.Should().Be(4);
         }
@@ -107,7 +107,7 @@ namespace Schmear.test
             };
 
             var bet = new Bet();
-            var result = await bet.GetBetAsync(betRequest);
+            var result = bet.GetBet(betRequest);
 
             result.Should().Be(2);
         }
@@ -140,7 +140,7 @@ namespace Schmear.test
             };
 
             var bet = new Bet();
-            var result = await bet.GetBetAsync(betRequest);
+            var result = bet.GetBet(betRequest);
 
             result.Should().Be(3);
         }

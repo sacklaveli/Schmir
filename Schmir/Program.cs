@@ -14,6 +14,23 @@ namespace Schmear
 
         public static async Task<int> Main(string[] args)
         {
+            while (true)
+            {
+                Console.WriteLine("==============================================================");
+                Console.WriteLine("==========================NEW GAME============================");
+                Console.WriteLine("==============================================================");
+                RunGame();
+
+               var read = Console.ReadLine();
+            
+            }
+           
+
+            return 0;
+        }
+
+        private static void RunGame()
+        {
             var deckFactoryRequest = new DeckFactoryRequest()
             {
                 JokerRank = 11,
@@ -33,7 +50,7 @@ namespace Schmear
 
             var dealer = new DealCards(deck);
 
-            for(int i = 0; i <= players; i++)
+            for (int i = 0; i <= players; i++)
             {
                 var playerhand = dealer.DealForPlayer(i);
 
@@ -48,15 +65,12 @@ namespace Schmear
                 };
 
                 var betFactory = new Bet();
-                var currentBet = await betFactory.GetBetAsync(betRequest);
+                var currentBet = betFactory.GetBet(betRequest);
                 currentHighestBet = currentHighestBet < currentBet ? currentBet : currentHighestBet;
-                System.Diagnostics.Debug.WriteLine($"Player bet is: {currentBet} ");
-                System.Diagnostics.Debug.WriteLine($"Highest bet is: {currentHighestBet} ");
+                Console.WriteLine($"Player bet would be: {currentBet} ");
+                Console.WriteLine($"Current Highest bet is: {currentHighestBet} ");
 
             }
-
-        
-            return 0;
         }
     }
 }
