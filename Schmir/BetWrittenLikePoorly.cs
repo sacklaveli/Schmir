@@ -5,10 +5,21 @@ using System.Threading.Tasks;
 
 namespace Schmear
 {
-    class BetWrittenLikePoorly
+    public class BetWrittenLikePoorly
     {
+        //This class Gets the bet in an async fashion
+        // In my younger and more vulnerable years my father gave me some advice that I've been
+        // turning over in my mind ever since. Whenever you feel like criticizing anyone, he told me,
+        // just remember that all the people in this world haven't had the advantages that you've had.
+        // :JEU 
         public async Task<int> GetBetAsync(BetRequest betRequest)
         {
+            // This to consider:
+            // What happens in the class as we add rules? 
+            // How do we test this?
+            // How do we tell what part of this broke the tests?
+            // How would you feel if this code was printed and sent to your mother? 
+
             var returnBet = 0;
 
             // Sort the hand by suits
