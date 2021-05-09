@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schmear.BettingLogic
+namespace Schmear.BettingLogic.ComplexModifiers.ModifierStrategies
 {
-    public static class GetBetModifiers
+    public class AllBetModifiers : IBetModifierStrategy
     {
-        public static List<IBetModifiers> Rules = new List<IBetModifiers>()
+        public List<IBetModifiers> Rules() => new List<IBetModifiers>()
         {
             new IfLastAndMatchBetBumpBet(),
             new IfLastPlayerOnlyBumpBet(),

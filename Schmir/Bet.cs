@@ -43,7 +43,9 @@ namespace Schmear
                 bets.Add(await GetBetFromRule(rule, returnBet, betRequest));
             });
 
-            return GetMaxBet(new List<int?>() { GetMaxBet(bets), returnBet });
+            var suggestedBet = GetMinBet(bets);
+
+            return suggestedBet == 0 ? returnBet: suggestedBet;
         }
 
         private static IEnumerable<IGrouping<string, Card>> GetSortHandBySuit(BetRequest betRequest)
@@ -55,6 +57,12 @@ namespace Schmear
         {
             return Convert.ToInt32(bets.Where(x => x is not null).Max());
         }
+
+        private static int GetMinBet(List<int?> bets)
+        {
+            return Convert.ToInt32(bets.Where(x => x is not null).Where(x => x is not 0).Min());
+        }
+
 
         private async Task<int?> GetBetFromRule(IBetLogicRule rule, int returnBet, IEnumerable<IGrouping<string, Card>> suitsWithSwings)
         {

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Xunit;
 using Schmear.models;
 using Schmear.BettingLogic;
+using Schmear.BettingLogic.ComplexRules.BettingLogicStrategies;
+using Schmear.BettingLogic.ComplexModifiers.ModifierStrategies;
 
 namespace Schmear.test
 {
@@ -36,8 +38,8 @@ namespace Schmear.test
                 },
                 Position = 1,
                 PlayerCount = 4,
-                BetLogicRules = GetBetLogicRules.Rules,
-                BetModifiers = GetBetModifiers.Rules,
+                BetLogicRules = new AllOfTheBettingLogicRules().Rules(),
+                BetModifiers = new AllBetModifiers().Rules(),
             };
 
            var bet = new Bet();
@@ -69,8 +71,8 @@ namespace Schmear.test
                 },
                 Position = 2,
                 PlayerCount = 4,
-                BetLogicRules = GetBetLogicRules.Rules,
-                BetModifiers = GetBetModifiers.Rules,
+                BetLogicRules = new AllOfTheBettingLogicRules().Rules(),
+                BetModifiers = new AllBetModifiers().Rules(),
             };
 
             var bet = new Bet();
@@ -89,7 +91,7 @@ namespace Schmear.test
                 {
                     Cards = new List<Card>() {
                         new Card() { Rank = 15, Suit = new List<string>(){ Suits.Clubs  } },
-                        new Card() { Rank = 15, Suit = new List<string>(){Suits.Hearts  } },
+                        new Card() { Rank = 5, Suit = new List<string>(){Suits.Hearts  } },
                         new Card() { Rank = 14, Suit = new List<string>(){Suits.Clubs  } },
                         new Card() { Rank = 13, Suit = new List<string>(){Suits.Clubs  } },
                         new Card() { Rank = 12, Suit = new List<string>(){Suits.Diamonds  } },
@@ -102,8 +104,8 @@ namespace Schmear.test
                 },
                 Position = 3,
                 PlayerCount = 4,
-                BetLogicRules = GetBetLogicRules.Rules,
-                BetModifiers = GetBetModifiers.Rules,
+                BetLogicRules = new AllOfTheBettingLogicRules().Rules(),
+                BetModifiers = new AllBetModifiers().Rules(),
             };
 
             var bet = new Bet();
@@ -135,8 +137,8 @@ namespace Schmear.test
                 },
                 Position = 1,
                 PlayerCount = 4,
-                BetLogicRules = GetBetLogicRules.Rules,
-                BetModifiers = GetBetModifiers.Rules,
+                BetLogicRules = new AllOfTheBettingLogicRules().Rules(),
+                BetModifiers = new AllBetModifiers().Rules(),
             };
 
             var bet = new Bet();

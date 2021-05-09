@@ -10,7 +10,7 @@ namespace Schmear.BettingLogic.SimpleRules
     {
         public static bool IsSwing(int rank)
         {
-            return rank >= StandardValues.JackOrJick;
+            return rank >= StandardValues.Joker;
         }
 
         public static bool IsPoint(int rank)
