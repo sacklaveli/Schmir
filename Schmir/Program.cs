@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Schmear.BettingLogic.ComplexRules.BettingLogicStrategies;
+using Schmear.BettingLogic.ComplexModifiers.ModifierStrategies;
 
 namespace Schmear
 {
@@ -56,8 +58,8 @@ namespace Schmear
 
                 var betRequest = new BetRequest()
                 {
-                    BetLogicRules = GetBetLogicRules.Rules,
-                    BetModifiers = GetBetModifiers.Rules,
+                    BetLogicRules = new AllOfTheBettingLogicRules().Rules(),
+                    BetModifiers = new AllBetModifiers().Rules(),
                     Hand = new Hand() { Cards = playerhand },
                     PlayerCount = players,
                     Position = i,

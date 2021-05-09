@@ -18,6 +18,7 @@ namespace Schmear
             // What happens in the class as we add rules? 
             // How do we test this?
             // How do we tell what part of this broke the tests?
+            // What if the product owner wants some players to play differently?
             // How would you feel if this code was printed and sent to your mother? 
 
             var returnBet = 0;
@@ -51,6 +52,16 @@ namespace Schmear
             else if (handSorted.Any(suitStack => suitStack.Where(card => card.Rank == StandardValues.Ace).Count() >= 1))
             {
                 returnBet = returnBet < 3 ? returnBet : 3;
+            }
+            // If you have 5 swings and the low card of a suit than 5 
+            else if (handSorted.Any(suitStack =>suitStack.Any(card => card.Rank == StandardValues.LowCard) && suitStack.Where(card => StandardRules.IsSwing(card.Rank)).Count() >= 5))
+            {
+                returnBet = returnBet < 5 ? returnBet : 5;
+            }
+            // If you have more than half of an available suit than 5
+            else if (handSorted.Any(suitStack => suitStack.Count() > 7))
+            {
+                returnBet = returnBet < 5 ? returnBet : 5;
             }
 
             //The following are rules where the current bet in the game is factored into the suggested bet

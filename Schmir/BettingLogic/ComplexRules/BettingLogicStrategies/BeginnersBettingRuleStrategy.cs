@@ -4,18 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Schmear.BettingLogic
+namespace Schmear.BettingLogic.ComplexRules.BettingLogicStrategies
 {
-    public static class GetBetLogicRules
+    public class BeginnersBettingRuleStrategy : IBettingLogicStrategy
     {
-        public static List<IBetLogicRule> Rules = new List<IBetLogicRule>()
+        public List<IBetLogicRule> Rules() => new List<IBetLogicRule>()
         {
             new IfFourSwingsThan4(),
             new IfThereSwingsAnd2Than4(),
-            new IfLionShareOfAces(),
-            new IfHelperBet(),
             new IfAceAtLeast3(),
         };
     }
-
 }
