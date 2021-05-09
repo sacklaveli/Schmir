@@ -14,11 +14,11 @@ namespace Schmear
         // :JEU 
         public async Task<int> GetBetAsync(BetRequest betRequest)
         {
-            // This to consider:
+            // Things to consider:
             // What happens in the class as we add rules? 
             // How do we test this?
             // How do we tell what part of this broke the tests?
-            // What if the product owner wants some players to play differently?
+            // What if the product owner wants some bets to process differently?
             // How would you feel if this code was printed and sent to your mother? 
 
             var returnBet = 0;
