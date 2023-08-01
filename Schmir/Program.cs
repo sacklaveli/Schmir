@@ -71,7 +71,8 @@ namespace Schmear
                 currentHighestBet = currentHighestBet < currentBet ? currentBet : currentHighestBet;
                 Console.WriteLine($"Player bet would be: {currentBet} ");
                 Console.WriteLine($"Current Highest bet is: {currentHighestBet} ");
-
+                Console.WriteLine("-----------------------------------------------");
+                Console.WriteLine("\n");
             }
         }
     }

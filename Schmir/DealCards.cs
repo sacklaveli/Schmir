@@ -1,9 +1,9 @@
 ﻿using DeckService;
 using DeckService.models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Schmear.CommandLineOutput;
 
 namespace Schmear
 {
@@ -29,8 +29,11 @@ namespace Schmear
                 Deck.Cards.RemoveAt(topCardIndex);
             }
             playerHand.Sort((x, y) => y.Rank.CompareTo(x.Rank));
-           
-            Console.WriteLine("Player" + playerNumber + $"'s hand: {JsonConvert.SerializeObject(playerHand.GroupBy(x => x.Suit.FirstOrDefault()))}");
+            playerHand.GroupBy(card => card.Suit);
+
+            var carDisplay = new CardDisplay();
+            var handoutPut = carDisplay.GetCommandLineCards(playerHand);
+            Console.WriteLine("Player" + playerNumber + $"'s hand: {handoutPut}");
             return playerHand;
         }
     }
